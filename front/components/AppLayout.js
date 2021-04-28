@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import Link from 'next/link';
-import styled from 'styled-components';
-import { Menu, Input, Row, Col } from 'antd';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import Link from "next/link";
+import styled from "styled-components";
+import { Menu, Input, Row, Col } from "antd";
 
-import LoginForm from './LoginForm';
-import UserProfile from './UserProfile';
+import LoginForm from "./LoginForm";
+import UserProfile from "./UserProfile";
 
 const { Search } = Input;
 
@@ -39,7 +39,11 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+          {isLoggedIn ? (
+            <UserProfile setIsLoggedIn={setIsLoggedIn} />
+          ) : (
+            <LoginForm setIsLoggedIn={setIsLoggedIn} />
+          )}
         </Col>
         <Col xs={24} md={12}>
           {children}

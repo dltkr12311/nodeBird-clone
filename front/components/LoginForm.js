@@ -1,32 +1,32 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import Link from 'next/link';
-import { Form, Input, Button } from 'antd';
-import styled from 'styled-components';
+import React, { useState, useCallback, useMemo } from "react";
+import Link from "next/link";
+import styled from "styled-components";
+import { Form, Input, Button } from "antd";
+import PropTypes from "prop-types";
+import useInput from "../hooks/useInput";
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
 `;
 
-const LoginForm = () => {
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordCheck, SetPasswordCheck] = useState('');
+const FormWrapper = styled(Form)`
+  padding: 10px;
+`;
 
-  //컴포넌트에 props으로 넘기는 것은 useCallback을 쓰자 그래야 최적화가 된다.
-  // useCallback은 함수를 캐싱한다.
-  const onChangeId = useCallback((e) => {
-    setId(e.target.value);
-  }, []);
+const LoginForm = ({ setIsLoggedIn }) => {
+  const [id, onChangeId] = useInput("");
+  const [password, onChangePassword] = useInput("");
 
-  const onChangePassword = useCallback((e) => {
-    setPassword(e.target.value);
-  }, []);
+  const onSubmitForm = useCallback(() => {
+    console.log(id, password);
+    setIsLoggedIn(true);
+  }, [id, password]);
 
   //useMemo는 값을 캐싱한다.
   const style = useMemo(() => ({ marginTop: 10 }), []);
 
   return (
-    <Form>
+    <FormWrapper onFinish={onSubmitForm}>
       <div>
         <label htmlFor="user-id">아이디</label>
         <br />
@@ -43,7 +43,10 @@ const LoginForm = () => {
           required
         />
       </div>
-      {/* 왠만해서는 인라인 style을 주지 말자 객체를 사용하게 되면 렌더링 이후에 리렌더링을 하기 때문에 비효율적이다. */}
+      {/* 
+      1. 왠만해서는 인라인 style을 주지 말자 객체를 사용하게 되면 렌더링 이후에 리렌더링을 하기 때문에 비효율적이다.
+      2. 버튼에다가 htmlType = submit을 붙어줘야 form이 submit이 된다.
+      */}
       <ButtonWrapper style={style}>
         <Button type="primary" htmlType="submit" loading={false}>
           로그인
@@ -54,8 +57,12 @@ const LoginForm = () => {
           </a>
         </Link>
       </ButtonWrapper>
-    </Form>
+    </FormWrapper>
   );
+};
+
+LoginForm.propTypes = {
+  setIsLoggedIn: PropTypes.isRequired,
 };
 
 export default LoginForm;
