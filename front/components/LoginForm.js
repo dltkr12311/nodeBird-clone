@@ -2,8 +2,10 @@ import React, { useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import { Form, Input, Button } from "antd";
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+
 import useInput from "../hooks/useInput";
+import { loginAction } from "../reducers";
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
@@ -13,13 +15,15 @@ const FormWrapper = styled(Form)`
   padding: 10px;
 `;
 
-const LoginForm = ({ setIsLoggedIn }) => {
+const LoginForm = () => {
+  const dispatch = useDispatch();
   const [id, onChangeId] = useInput("");
   const [password, onChangePassword] = useInput("");
 
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
-    setIsLoggedIn(true);
+    //setIsLoggedIn(true);
+    dispatch(loginAction({ id, password }));
   }, [id, password]);
 
   //useMemo는 값을 캐싱한다.
@@ -59,10 +63,6 @@ const LoginForm = ({ setIsLoggedIn }) => {
       </ButtonWrapper>
     </FormWrapper>
   );
-};
-
-LoginForm.propTypes = {
-  setIsLoggedIn: PropTypes.isRequired,
 };
 
 export default LoginForm;
