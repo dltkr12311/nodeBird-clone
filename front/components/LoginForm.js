@@ -5,7 +5,7 @@ import { Form, Input, Button } from "antd";
 import { useDispatch } from "react-redux";
 
 import useInput from "../hooks/useInput";
-import { loginAction } from "../reducers";
+import { loginAction } from "../reducers/user";
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;

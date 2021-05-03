@@ -17,7 +17,7 @@ const SearchInput = styled(Search)`
 const AppLayout = ({ children }) => {
   // 중앙관리소에서 상태관리를 하고 있기 때문에 useState는 필요 없어졌다.
   //const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const { isLoggedIn } = useSelector((state) => state.user);
 
   return (
     <div>

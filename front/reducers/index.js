@@ -1,58 +1,22 @@
-import { HYDRAFT } from "next-redux-wrapper";
-
-const initialState = {
-  user: {
-    isLoggedIn: false,
-    user: null,
-    signUpData: {},
-    loginData: {},
-  },
-  post: {
-    mainPosts: [],
-  },
-};
-
-//동적 생성기, 액션 생성자(action creator)
-export const loginAction = (data) => {
-  return {
-    type: "LOG_IN",
-    data,
-  };
-};
-
-export const logoutAction = () => {
-  return {
-    type: "LOG_OUT",
-  };
-};
+import { HYDRAFE } from "next-redux-wrapper";
+import user from "./user";
+import post from "./post";
+import { combineReducers } from "redux";
 
 //(이전상태, 액션) => 다음상태
-const rootReducers = (state = initialState, action) => {
-  switch (action.type) {
-    case "HYDRAFE":
-      console.log("HYDRAFT", action);
-      return { ...state, ...action.payload };
-    case "LOG_IN":
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          isLoggedIn: true,
-          user: action.data,
-        },
-      };
-    case "LOG_OUT":
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          isLoggedIn: false,
-          user: null,
-        },
-      };
-    default:
-      return state;
-  }
-};
+//HYDRATE는 서버에서 생성한 상태를 클라이언트 스토어에 합쳐준다.(서버사이드렌더링을 위해서)
+const rootReducers = combineReducers({
+  index: (state = {}, action) => {
+    switch (action.type) {
+      case "HYDRAFE":
+        console.log("HYDRAFE", action);
+        return { ...state, ...action.payload };
+      default:
+        return state;
+    }
+  },
+  user,
+  post,
+});
 
 export default rootReducers;

@@ -4,6 +4,7 @@ import { applyMiddleware, createStore, compose } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "../reducers";
 
+//스토어를 생성하는 함수를 정의
 const configureStore = () => {
   const middlewares = [];
   const enhancer =
