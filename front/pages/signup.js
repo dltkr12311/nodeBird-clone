@@ -10,7 +10,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const { signUpLoading } = useSelector((state) => state.user);
 
-  const [email, onChangeemail] = useInput("");
+  const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, onChangePassword] = useInput("");
 
@@ -58,7 +58,7 @@ const Signup = () => {
         <div>
           <label htmlFor="user-email">이메일</label>
           <br />
-          <Input name="user-email" type="email" value={email} required onChange={onChangeemail} />
+          <Input name="user-email" type="email" value={email} required onChange={onChangeEmail} />
         </div>
         <div>
           <label htmlFor="user-nickname">닉네임</label>

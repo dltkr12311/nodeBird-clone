@@ -1,4 +1,4 @@
-import { HYDRAFE } from "next-redux-wrapper";
+import { HYDRATE } from "next-redux-wrapper";
 import user from "./user";
 import post from "./post";
 import { combineReducers } from "redux";
@@ -8,8 +8,8 @@ import { combineReducers } from "redux";
 const rootReducers = combineReducers({
   index: (state = {}, action) => {
     switch (action.type) {
-      case "HYDRAFE":
-        console.log("HYDRAFE", action);
+      case HYDRATE:
+        console.log("HYDRATE", action);
         return { ...state, ...action.payload };
       default:
         return state;

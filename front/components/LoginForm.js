@@ -5,7 +5,7 @@ import { Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
 import useInput from "../hooks/useInput";
-import { loginRequestAction } from "../reducers/user";
+import { logInRequestAction } from "../reducers/user";
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
@@ -15,16 +15,16 @@ const FormWrapper = styled(Form)`
   padding: 10px;
 `;
 
-const LoginForm = () => {
+const logInForm = () => {
   const dispatch = useDispatch();
-  const { loginLoading } = useSelector((state) => state.user);
+  const { logInLoading } = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
 
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
     //setIsLoggedIn(true);
-    dispatch(loginRequestAction({ email, password }));
+    dispatch(logInRequestAction({ email, password }));
   }, [email, password]);
 
   //useMemo는 값을 캐싱한다.
@@ -35,7 +35,7 @@ const LoginForm = () => {
       <div>
         <label htmlFor="user-email">이메일</label>
         <br />
-        <Input name="user-email" value={email} onChange={onChangeEmail} required />
+        <Input name="user-email" type="email" value={email} onChange={onChangeEmail} required />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
@@ -53,7 +53,7 @@ const LoginForm = () => {
       2. 버튼에다가 htmlType = submit을 붙어줘야 form이 submit이 된다.
       */}
       <ButtonWrapper style={style}>
-        <Button type="primary" htmlType="submit" loading={loginLoading}>
+        <Button type="primary" htmlType="submit" loading={logInLoading}>
           로그인
         </Button>
         <Link href="/signup">
@@ -66,4 +66,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default logInForm;
