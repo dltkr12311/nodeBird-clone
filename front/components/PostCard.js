@@ -8,16 +8,19 @@ import {
   MessageOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { REMOVE_POST_REQUEST } from "../reducers/post";
 
 import PostImages from "./PostImages";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
 
 const PostCard = ({ post }) => {
+  let dispatch = useDispatch();
   const [liked, setLiked] = useState(false);
   const [commentFormOpend, setCommentFormOpend] = useState(false);
   const id = useSelector((state) => state.user.me?.id);
+  const { removePostLoading } = useSelector((state) => state.post);
   // ?.optional chaning me가 있으면 id가 들어가고 없으면 undefined가 들어간다.
   //const id = me?.id;
 
@@ -26,6 +29,13 @@ const PostCard = ({ post }) => {
   }, []);
   const onToggleComment = useCallback(() => {
     setCommentFormOpend((prev) => !prev);
+  }, []);
+
+  const onRemovePost = useCallback(() => {
+    dispatch({
+      type: REMOVE_POST_REQUEST,
+      data: post.id,
+    });
   }, []);
 
   return (
@@ -48,7 +58,9 @@ const PostCard = ({ post }) => {
                 {id && post.User.id === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button type="danger">삭제</Button>
+                    <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>
+                      삭제
+                    </Button>
                   </>
                 ) : (
                   <Button>신고</Button>

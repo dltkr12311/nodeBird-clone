@@ -1,3 +1,5 @@
+import shortid from "shortid";
+
 export const initialState = {
   mainPosts: [
     {
@@ -20,13 +22,17 @@ export const initialState = {
       ],
       Comments: [
         {
+          id: shortid.generate(),
           User: {
+            id: shortid.generate(),
             nickname: "nero",
           },
           content: "취업준비중입니다~",
         },
         {
+          id: shortid.generate(),
           User: {
+            id: shortid.generate(),
             nickname: "hero",
           },
           content: "조만간 취뽀합니다~",
@@ -40,6 +46,9 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  removePostLoading: false,
+  removePostDone: false,
+  removePostError: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
@@ -48,6 +57,10 @@ export const initialState = {
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
+
+export const REMOVE_POST_REQUEST = "REMOVE_POST_REQUEST";
+export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS";
+export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
 
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
@@ -63,15 +76,24 @@ export const addComment = (data) => ({
   data,
 });
 
-const dummyPost = (dataText) => ({
-  id: 2,
-  content: dataText,
+const dummyPost = (data) => ({
+  id: data.id,
+  content: data.content,
   User: {
     id: 1,
     nickname: "리삭",
   },
   Images: [],
   Comments: [],
+});
+
+const dummyComment = (data) => ({
+  id: shortid.generate(),
+  content: data,
+  User: {
+    id: 1,
+    nickname: "리삭",
+  },
 });
 
 const reducer = (state = initialState, action) => {
@@ -103,17 +125,50 @@ const reducer = (state = initialState, action) => {
         addCommentDone: false,
         addCommentError: null,
       };
-    case ADD_COMMENT_SUCCESS:
+    case ADD_COMMENT_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+      const post = { ...state.mainPosts[postIndex] };
+      post.Comments = [dummyComment(action.data.content), ...post.Comments];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = post;
+      //전역으로 관리하고 있는 상태  mainPosts에서 고유 값을 비교해서 true라면,
+      // 해당 고유값 mainPosts로 얕은 복사를 한다.
+      // 기존의 댓글과 새로 단 댓글을 해당 post에 넣고
+      // 기존 mainPosts를 얕은 복사하고
+      // 해당 post를 mainPosts로 할당한다.
       return {
         ...state,
+        mainPosts,
         addCommentLoading: false,
         addCommentDone: true,
       };
+    }
     case ADD_COMMENT_FAILURE:
       return {
         ...state,
         addCommentLoading: false,
         addCommentError: action.error,
+      };
+    case REMOVE_POST_REQUEST:
+      return {
+        ...state,
+        removePostLoading: true,
+        removePostDone: false,
+        removePostError: null,
+      };
+    case REMOVE_POST_SUCCESS: {
+      return {
+        ...state,
+        mainPosts: state.mainPosts.filter((v) => v.id !== action.data),
+        removePostLoading: false,
+        removePostDone: true,
+      };
+    }
+    case REMOVE_POST_FAILURE:
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostError: action.error,
       };
     default:
       return state;

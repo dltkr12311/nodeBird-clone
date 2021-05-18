@@ -9,7 +9,7 @@ import { ADD_COMMENT_REQUEST } from "../reducers/post";
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
-  const { addCommentDone } = useSelector((state) => state.post);
+  const { addCommentDone, addCommentLoading } = useSelector((state) => state.post);
   const [commentText, onChangeCommentText, setCommentText] = useInput("");
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const CommentForm = ({ post }) => {
     console.log("id::", post.id, "commentText::", commentText);
     dispatch({
       type: ADD_COMMENT_REQUEST,
-      data: { content: commentText, postId: post.id, userId: user.id },
+      data: { content: commentText, postId: post.id, userId: id },
     });
   }, [commentText, id]);
 
@@ -31,9 +31,10 @@ const CommentForm = ({ post }) => {
       <Form.Item style={{ position: "relative", margin: 0 }}>
         <Input.TextArea value={commentText} onChange={onChangeCommentText} row={4} />
         <Button
+          style={{ position: "absolute", right: 0, bottom: -40, zIndex: 1 }}
           type="primary"
           htmlType="submit"
-          style={{ position: "absolute", right: 0, bottom: -40 }}
+          loading={addCommentLoading}
         >
           삐약
         </Button>
