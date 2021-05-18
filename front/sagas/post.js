@@ -51,11 +51,11 @@ function* addComment(action) {
 //함수의 뜻은 로그인이라는 액션이 실행되기 전까지 기달리겠다.
 //take는 일회용이다. 한번 실행되면 해당 함수는 사라진다. 예를 들어 로그인을 한번밖에 못한다...
 function* watchAddPost() {
-  yield takeLatest(ADD_POST_REQUEST, addPost, 10000);
+  yield takeLatest(ADD_POST_REQUEST, addPost);
 }
 
 function* watchAddComment() {
-  yield takeLatest(ADD_COMMENT_REQUEST, addComment, 10000);
+  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
 
 export default function* postSaga() {

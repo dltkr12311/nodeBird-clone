@@ -63,9 +63,9 @@ export const addComment = (data) => ({
   data,
 });
 
-const dummyPost = (data) => ({
+const dummyPost = (dataText) => ({
   id: 2,
-  content: data,
+  content: dataText,
   User: {
     id: 1,
     nickname: "리삭",
