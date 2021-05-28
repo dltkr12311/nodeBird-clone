@@ -1,5 +1,6 @@
-import shortid from "shortid";
+import shortId from "shortid";
 import produce from "immer";
+import faker from "faker";
 
 export const initialState = {
   mainPosts: [
@@ -23,17 +24,17 @@ export const initialState = {
       ],
       Comments: [
         {
-          id: shortid.generate(),
+          id: shortId.generate(),
           User: {
-            id: shortid.generate(),
+            id: shortId.generate(),
             nickname: "nero",
           },
           content: "취업준비중입니다~",
         },
         {
-          id: shortid.generate(),
+          id: shortId.generate(),
           User: {
-            id: shortid.generate(),
+            id: shortId.generate(),
             nickname: "hero",
           },
           content: "조만간 취뽀합니다~",
@@ -54,6 +55,33 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(20)
+    .fill()
+    .map(() => ({
+      id: shortId.generate(),
+      User: {
+        id: shortId.generate(),
+        nickname: faker.name.findName(),
+      },
+      content: faker.lorem.paragraph(),
+      Images: [
+        {
+          src: faker.image.imageUrl(),
+        },
+      ],
+      Comments: [
+        {
+          User: {
+            id: shortId.generate(),
+            nickname: faker.name.findName(),
+          },
+          content: faker.lorem.sentence(),
+        },
+      ],
+    }))
+);
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
@@ -89,7 +117,7 @@ const dummyPost = (data) => ({
 });
 
 const dummyComment = (data) => ({
-  id: shortid.generate(),
+  id: shortId.generate(),
   content: data,
   User: {
     id: 1,
