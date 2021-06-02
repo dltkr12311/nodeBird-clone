@@ -1,5 +1,5 @@
 import axios from "axios";
-import { all, put, fork, delay, takeLatest } from "@redux-saga/core/effects";
+import { all, put, fork, delay, takeLatest, throttle } from "@redux-saga/core/effects";
 import {
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
