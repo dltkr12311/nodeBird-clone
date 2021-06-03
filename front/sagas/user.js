@@ -13,6 +13,12 @@ import {
   CHANGE_NICKNAME_REQUEST,
   CHANGE_NICKNAME_SUCCESS,
   CHANGE_NICKNAME_FAILURE,
+  FOLLOW_REQUEST,
+  UNFOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  FOLLOW_FAILURE,
+  UNFOLLOW_SUCCESS,
+  UNFOLLOW_FAILURE,
 } from "../reducers/user";
 
 //*붙이는거 아님 실제로 서버에 요청을 보내는 함수
@@ -77,6 +83,52 @@ function* logOut() {
   }
 }
 
+function followAPI() {
+  return axios.post("/api/follow");
+}
+function* follow(action) {
+  try {
+    //const result = yield call(followAPI);
+    yield delay(1000);
+    yield put({
+      type: FOLLOW_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: FOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function unfollowAPI() {
+  return axios.post("/api/unFollow");
+}
+function* unfollow(action) {
+  try {
+    //const result = yield call(unfollowAPI);
+    yield delay(1000);
+    yield put({
+      type: UNFOLLOW_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: UNFOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchFollow() {
+  yield takeLatest(FOLLOW_REQUEST, follow);
+}
+
+function* watchUnFollow() {
+  yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -91,5 +143,11 @@ function* watchSignUp() {
 
 //fork는 비동기 함수호출, call은 동기 함수 호출
 export default function* userSaga() {
-  yield all([fork(watchLogIn), fork(watchLogOut), fork(watchSignUp)]);
+  yield all([
+    fork(watchFollow),
+    fork(watchUnFollow),
+    fork(watchLogIn),
+    fork(watchLogOut),
+    fork(watchSignUp),
+  ]);
 }
